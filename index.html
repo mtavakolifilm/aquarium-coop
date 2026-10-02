@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aquarium Co-Op Transcript Search</title>
+<style>
+:root{--bg:#f6f7f5;--card:#fff;--ink:#1d2421;--mute:#66706b;--line:#dfe3df;--acc:#1f6f5c;--acc2:#e7f2ee;--hit:#fff0a8;--live:#8a4b00;--livebg:#fdebd2}
+@media (prefers-color-scheme:dark){:root{--bg:#141817;--card:#1d2321;--ink:#e8ece9;--mute:#99a39d;--line:#2d3633;--acc:#58c2a6;--acc2:#1f2f2a;--hit:#5b4f12;--live:#f1b872;--livebg:#3a2a12}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:24px 16px 80px}
+h1{font-size:1.4rem;margin:0 0 4px}
+.sub{color:var(--mute);margin:0 0 18px;font-size:.92rem}
+.bar{display:flex;gap:8px;flex-wrap:wrap}
+input[type=search]{flex:1 1 320px;padding:12px 14px;font-size:1rem;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+input[type=search]:focus,select:focus,button:focus{outline:2px solid var(--acc);outline-offset:1px}
+button,select{padding:11px 14px;font-size:.95rem;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);cursor:pointer}
+button.go{background:var(--acc);color:#fff;border-color:var(--acc)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px;align-items:center}
+.filters label{font-size:.85rem;color:var(--mute)}
+.status{margin:14px 0;color:var(--mute);font-size:.92rem}
+.vid{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0}
+.vt{font-weight:600}
+.vt a{color:inherit;text-decoration:none}.vt a:hover{text-decoration:underline}
+.meta{font-size:.82rem;color:var(--mute);margin:2px 0 8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.badge{font-size:.72rem;padding:1px 8px;border-radius:99px;background:var(--acc2);color:var(--acc)}
+.badge.live{background:var(--livebg);color:var(--live)}
+.hit{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:.93rem}
+.hit:first-of-type{border-top:0}
+.ts{flex:0 0 auto;font-variant-numeric:tabular-nums;color:var(--acc);text-decoration:none;font-weight:600;min-width:58px}
+.ts:hover{text-decoration:underline}
+mark{background:var(--hit);color:inherit;border-radius:3px;padding:0 1px}
+.more{background:none;border:0;color:var(--acc);padding:6px 0;font-size:.88rem}
+.tbtn{background:none;border:0;color:var(--acc);padding:0;font-size:.82rem;text-decoration:underline}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:9}
+#modal .box{position:absolute;inset:3vh 3vw;background:var(--card);border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+#modal header{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}
+#modal .body{overflow:auto;padding:8px 16px 40px}
+.ln{display:flex;gap:10px;padding:2px 0;font-size:.93rem}
+.ln.focus{background:var(--acc2)}
+.empty{padding:30px 0;color:var(--mute)}
+.tip{font-size:.82rem;color:var(--mute);margin-top:6px}
+.foot{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-size:.8rem;color:var(--mute)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Aquarium Co-Op Transcript Search</h1>
+  <p class="sub" id="sub">Loading transcripts...</p>
+  <div class="bar">
+    <input id="q" type="search" list="terms" placeholder="Search a product, fish, plant, or phrase" autocomplete="off" aria-label="Search">
+    <button class="go" id="go">Search</button>
+  </div>
+  <datalist id="terms"></datalist>
+  <div class="filters">
+    <label>Type <select id="ftype"><option value="">Videos and livestreams</option><option value="v">Videos only</option><option value="l">Livestreams only</option></select></label>
+    <label>Year <select id="fyear"><option value="">All years</option></select></label>
+    <label>Sort <select id="fsort"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="most">Most mentions</option></select></label>
+  </div>
+  <div class="tip">Plural and spelling variants match automatically (betta finds bettas). Use commas to search several terms at once, for example: easy green, easy root tabs.</div>
+  <div class="status" id="status"></div>
+  <div id="results"></div>
+  <p class="foot">Unofficial search tool, not affiliated with or endorsed by Aquarium Co-Op. Text comes from YouTube's auto-generated captions with name corrections added, so errors remain. Every result links to the original video, which is the source to watch and cite.</p>
+</div>
+<div id="modal"><div class="box"><header><div id="mtitle" style="font-weight:600"></div><button id="mclose">Close</button></header><div class="body" id="mbody"></div></div></div>
+
+<script>
+/* Synonym groups: searching any member also finds the others. Edit freely. */
+const SYNONYMS=[
+ ["ramshorn","rams horn","ram's horn"],["ich x","ichx"],["bristlenose","bristle nose"],
+ ["apisto","apistogramma"],["otos","otocinclus","oto"],["crypts","cryptocoryne"],
+ ["cherry shrimp","rcs","red cherry shrimp"],["bba","black beard algae"],["hob","hang on back"],
+ ["gsa","green spot algae"],["hygro","hygrophila"],["dwarf sag","dwarf sagittaria"],
+ ["pea puffer","pygmy puffer","dwarf puffer"],["mbu puffer","mbu"],["java fern","javafern"],
+ ["easy green","easygreen"],["co op","coop","aquarium co op"],["celestial pearl danio","cpd"]
+];
+function stem(w){
+  if(w.length>3){
+    if(w.endsWith("ies")) return w.slice(0,-3)+"y";
+    if(/(ss|us|is)$/.test(w)) return w;
+    if(/(ches|shes|xes|zes|sses)$/.test(w)) return w.slice(0,-2);
+    if(w.endsWith("s")) return w.slice(0,-1);
+  }
+  return w;
+}
+function norm(s){
+  return s.toLowerCase().replace(/['\u2019]/g,"").replace(/[^a-z0-9]+/g," ").trim().split(" ").filter(Boolean).map(stem).join(" ");
+}
+const $=id=>document.getElementById(id);
+let V=[];
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function rx(alts){
+  const parts=alts.map(a=>a.split(" ").map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?:ies|y|es|s|'s|\u2019s)?").join("[^a-z0-9]+"));
+  return new RegExp("(?<![a-z0-9])(?:"+parts.join("|")+")(?![a-z0-9])","gi");
+}
+function hl(text,re){
+  re.lastIndex=0; let out="",last=0,m;
+  while((m=re.exec(text))){ if(m[0]==="") {re.lastIndex++;continue;} out+=esc(text.slice(last,m.index))+"<mark>"+esc(m[0])+"</mark>"; last=m.index+m[0].length; }
+  return out+esc(text.slice(last));
+}
+function fmt(sec){const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return h?`${h}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`:`${m}:${String(s).padStart(2,"0")}`}
+function yt(id,t){return `https://www.youtube.com/watch?v=${id}&t=${t}s`}
+
+/* Build normalized index */
+function build(done){
+  let i=0;
+  (function step(){
+    const end=Math.min(i+20,V.length);
+    for(;i<end;i++){
+      const v=V[i], starts=[], parts=[]; let pos=1;
+      for(const l of v.lines){ const n=norm(l[1]); starts.push(pos); parts.push(n); pos+=n.length+1; }
+      v.starts=starts; v.joined=" "+parts.join(" ")+" ";
+    }
+    $("sub").textContent=`Indexing ${i} of ${V.length} videos...`;
+    if(i<V.length) setTimeout(step,0); else done();
+  })();
+}
+function lineAt(starts,off){ let lo=0,hi=starts.length-1; while(lo<hi){const mid=(lo+hi+1)>>1; if(starts[mid]<=off) lo=mid; else hi=mid-1;} return lo; }
+
+function findHits(v,alts){
+  const hits=new Map();
+  for(const a of alts){
+    const needle=" "+a+" "; let p=0;
+    while((p=v.joined.indexOf(needle,p))!==-1){
+      const li=lineAt(v.starts,p+1);
+      if(!hits.has(li)) hits.set(li,1); else hits.set(li,hits.get(li)+1);
+      p+=a.length+1;
+    }
+  }
+  return hits;
+}
+function expand(term){
+  const n=norm(term); const out=new Set([n]);
+  for(const g of SYNONYMS){ const gn=g.map(norm); if(gn.includes(n)) gn.forEach(x=>out.add(x)); }
+  return [...out].filter(Boolean);
+}
+
+let state={res:[],alts:[],re:null};
+function run(){
+  const raw=$("q").value.trim();
+  if(!raw){ $("results").innerHTML=""; $("status").textContent=""; return; }
+  const terms=raw.split(",").map(s=>s.trim()).filter(Boolean);
+  const altSet=new Set(); terms.forEach(t=>expand(t).forEach(a=>altSet.add(a)));
+  const alts=[...altSet]; if(!alts.length) return;
+  const ft=$("ftype").value, fy=$("fyear").value;
+  const res=[]; let total=0;
+  for(const v of V){
+    if(ft==="v"&&v.live) continue; if(ft==="l"&&!v.live) continue;
+    if(fy&&!v.date.startsWith(fy)) continue;
+    const h=findHits(v,alts); if(!h.size) continue;
+    let c=0; h.forEach(x=>c+=x); total+=c;
+    res.push({v,h:[...h.keys()].sort((a,b)=>a-b),count:c});
+  }
+  const s=$("fsort").value;
+  res.sort((a,b)=> s==="most"?b.count-a.count : s==="old"?a.v.date.localeCompare(b.v.date) : b.v.date.localeCompare(a.v.date));
+  state={res,alts,re:rx(alts)};
+  render(raw,total);
+}
+function hitHTML(v,li,re){
+  const lines=v.lines, a=Math.max(0,li-1), b=Math.min(lines.length-1,li+1);
+  let txt=lines.slice(a,b+1).map(x=>x[1]).join(" ");
+  return `<div class="hit"><a class="ts" target="_blank" rel="noopener" href="${yt(v.id,lines[li][0])}">${fmt(lines[li][0])}</a><div>${hl(txt,re)}</div></div>`;
+}
+function render(raw,total){
+  const {res,re}=state;
+  $("status").textContent=res.length?`${total.toLocaleString()} mentions in ${res.length} videos`:"";
+  if(!res.length){ $("results").innerHTML=`<div class="empty">No matches for "${esc(raw)}". Try a shorter or different spelling.</div>`; return; }
+  const LIM=5; let html="";
+  res.forEach((r,idx)=>{
+    const v=r.v;
+    const shown=r.h.slice(0,LIM).map(li=>hitHTML(v,li,re)).join("");
+    const more=r.h.length>LIM?`<button class="more" data-i="${idx}">Show all ${r.h.length} locations</button>`:"";
+    html+=`<div class="vid"><div class="vt"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${v.id}">${esc(v.title)}</a></div>
+      <div class="meta"><span>${v.date}</span><span class="badge ${v.live?"live":""}">${v.live?"Livestream":"Video"}</span><span>${r.count} mention${r.count>1?"s":""}</span><button class="tbtn" data-t="${idx}">Read full transcript</button></div>
+      <div id="h${idx}">${shown}</div>${more}</div>`;
+  });
+  $("results").innerHTML=html;
+}
+$("results").addEventListener("click",e=>{
+  const m=e.target.closest(".more"), t=e.target.closest(".tbtn");
+  if(m){ const r=state.res[+m.dataset.i]; $("h"+m.dataset.i).innerHTML=r.h.map(li=>hitHTML(r.v,li,state.re)).join(""); m.remove(); }
+  if(t){ openT(state.res[+t.dataset.t]); }
+});
+function openT(r){
+  const v=r.v; $("mtitle").textContent=v.title+" ("+v.date+")";
+  const hs=new Set(r.h); let html="";
+  v.lines.forEach((l,i)=>{ html+=`<div class="ln ${hs.has(i)?"focus":""}" id="L${i}"><a class="ts" target="_blank" rel="noopener" href="${yt(v.id,l[0])}">${fmt(l[0])}</a><div>${hl(l[1],state.re)}</div></div>`; });
+  $("mbody").innerHTML=html; $("modal").style.display="block";
+  const f=r.h[0]; const el=document.getElementById("L"+f); if(el) el.scrollIntoView({block:"center"});
+}
+$("mclose").onclick=()=>{$("modal").style.display="none"};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("modal").style.display="none"});
+$("go").onclick=run; $("q").addEventListener("keydown",e=>{if(e.key==="Enter")run()});
+["ftype","fyear","fsort"].forEach(id=>$(id).addEventListener("change",run));
+
+function init(){
+  V=(window.TRANSCRIPTS||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
+  if(!V.length){ $("sub").textContent="The transcript data files were not found. Keep the data folder next to this page."; return; }
+  const years=[...new Set(V.map(v=>v.date.slice(0,4)))].sort().reverse();
+  years.forEach(y=>{const o=document.createElement("option");o.value=y;o.textContent=y;$("fyear").appendChild(o)});
+  (window.TERMS||[]).forEach(t=>{const o=document.createElement("option");o.value=t;$("terms").appendChild(o)});
+  build(()=>{
+    const live=V.filter(v=>v.live).length;
+    $("sub").textContent=`${V.length} videos and livestreams (${live} livestreams), ${V[0].date} to ${V[V.length-1].date}. Names corrected against the Aquarium Co-Op catalog.`;
+    $("q").focus();
+    const p=new URLSearchParams(location.search).get("q"); if(p){$("q").value=p;run();}
+  });
+}
+/* Load data/manifest.js, then every data file it lists, then start. */
+function loadScript(src){return new Promise(res=>{const s=document.createElement("script");s.src=src;s.onload=()=>res(true);s.onerror=()=>res(false);document.head.appendChild(s);});}
+(async()=>{
+  window.TRANSCRIPTS=[];
+  if(await loadScript("data/manifest.js")){
+    await Promise.all((window.DATA_FILES||[]).map(f=>loadScript("data/"+f)));
+    await loadScript("data/search_terms.js");
+  }
+  init();
+})();
+</script>
+</body>
+</html>

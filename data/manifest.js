@@ -1,0 +1,1 @@
+window.DATA_FILES=["search_data_2021.js", "search_data_2022.js", "search_data_2023.js", "search_data_2024.js", "search_data_2025.js", "search_data_2026.js"];

@@ -153,13 +153,14 @@ function expand(term){
 }
 
 let state={res:[],alts:[],re:null};
+function textTerm(t){ return t.replace(/\s*\((?:fine|coarse)\)\s*$/i,""); }
 function prodKey(t){ return norm(t).replace(/^(scratch dent|scratch and dent|broken seal) /,""); }
 function lineBySec(v,sec){ const L=v.lines; let lo=0,hi=L.length-1; while(lo<hi){const mid=(lo+hi+1)>>1; if(L[mid][0]<=sec) lo=mid; else hi=mid-1;} return lo; }
 function run(){
   const raw=$("q").value.trim();
   if(!raw){ $("results").innerHTML=""; $("status").textContent=""; return; }
   const terms=raw.split(",").map(s=>s.trim()).filter(Boolean);
-  const altSet=new Set(); terms.forEach(t=>expand(t).forEach(a=>altSet.add(a)));
+  const altSet=new Set(); terms.forEach(t=>expand(textTerm(t)).forEach(a=>altSet.add(a)));
   const alts=[...altSet]; if(!alts.length) return;
   const refBy=new Map(); let K=0;
   if(window.PRODUCT_REFS){ terms.forEach(t=>{ const arr=PRODUCT_REFS[prodKey(t)]; if(arr) arr.forEach(([id,sec,ph])=>{ let m=refBy.get(id); if(!m){m=[];refBy.set(id,m);} m.push([sec,ph]); }); }); }

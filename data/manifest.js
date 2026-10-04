@@ -1,1 +1,1 @@
-window.DATA_FILES=["search_data_2021.js", "search_data_2022.js", "search_data_2023.js", "search_data_2024.js", "search_data_2025.js", "search_data_2026.js"];
+window.DATA_FILES=["search_data_2018.js", "search_data_2019.js", "search_data_2020.js", "search_data_2021.js", "search_data_2022.js", "search_data_2023.js", "search_data_2024.js", "search_data_2025.js", "search_data_2026.js"];

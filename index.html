@@ -41,12 +41,27 @@ mark{background:var(--hit);color:inherit;border-radius:3px;padding:0 1px}
 .ln.focus{background:var(--acc2)}
 .empty{padding:30px 0;color:var(--mute)}
 .tip{font-size:.82rem;color:var(--mute);margin-top:6px}
+#home{cursor:pointer;display:inline-block}
+#home:hover{text-decoration:underline}
+.ref{font-size:.7rem;padding:0 7px;border-radius:99px;background:var(--acc2);color:var(--acc);white-space:nowrap;cursor:help;margin-left:4px}
+#player{position:fixed;z-index:20;right:16px;bottom:16px;width:min(440px,calc(100vw - 32px));background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.35);overflow:hidden}
+#player[hidden]{display:none}
+.phead{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 10px;font-size:.82rem;border-bottom:1px solid var(--line)}
+#ptitle{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.pbtns{display:flex;gap:10px;align-items:center;flex:0 0 auto}
+#pyt{color:var(--acc);white-space:nowrap}
+#pclose{padding:3px 10px;font-size:.8rem}
+.pframe{aspect-ratio:16/9;background:#000}
+.pframe iframe{width:100%;height:100%;border:0;display:block}
+body.pl .wrap{padding-bottom:330px}
+@media(min-width:900px){body.pl #modal .box{right:calc(3vw + 460px)}}
+@media(max-width:600px){#player{right:8px;bottom:8px;width:calc(100vw - 16px)}}
 .foot{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-size:.8rem;color:var(--mute)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Aquarium Co-Op Transcript Search</h1>
+  <h1><span id="home" role="link" tabindex="0" title="Back to the start page">Aquarium Co-Op Transcript Search</span></h1>
   <p class="sub" id="sub">Loading transcripts...</p>
   <div class="bar">
     <input id="q" type="search" list="terms" placeholder="Search a product, fish, plant, or phrase" autocomplete="off" aria-label="Search">
@@ -58,11 +73,12 @@ mark{background:var(--hit);color:inherit;border-radius:3px;padding:0 1px}
     <label>Year <select id="fyear"><option value="">All years</option></select></label>
     <label>Sort <select id="fsort"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="most">Most mentions</option></select></label>
   </div>
-  <div class="tip">Plural and spelling variants match automatically (betta finds bettas). Use commas to search several terms at once, for example: easy green, easy root tabs.</div>
+  <div class="tip">Plural and spelling variants match automatically (betta finds bettas). Use commas to search several terms at once, for example: easy green, easy root tabs. Picking a product from the dropdown also finds places where Cory only says part of the name (like &ldquo;our betta pellets&rdquo;), marked <span class="ref">short name</span>.</div>
   <div class="status" id="status"></div>
   <div id="results"></div>
-  <p class="foot">Unofficial search tool, not affiliated with or endorsed by Aquarium Co-Op. Text comes from YouTube's auto-generated captions with name corrections added, so errors remain. Every result links to the original video, which is the source to watch and cite.</p>
+  <p class="foot">Unofficial search tool, not affiliated with or endorsed by Aquarium Co-Op. Text comes from YouTube's auto-generated captions with name corrections added, so errors remain. Every result links to the original video, which is the source to watch and cite. Short-name references are identified by reading the surrounding words and can occasionally be wrong.</p>
 </div>
+<div id="player" hidden><div class="phead"><div id="ptitle"></div><div class="pbtns"><a id="pyt" target="_blank" rel="noopener">Open on YouTube</a><button id="pclose" aria-label="Close player">Close</button></div></div><div class="pframe"><iframe id="pf" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="YouTube video player"></iframe></div></div>
 <div id="modal"><div class="box"><header><div id="mtitle" style="font-weight:600"></div><button id="mclose">Close</button></header><div class="body" id="mbody"></div></div></div>
 
 <script>
@@ -88,7 +104,7 @@ function norm(s){
   return s.toLowerCase().replace(/['\u2019]/g,"").replace(/[^a-z0-9]+/g," ").trim().split(" ").filter(Boolean).map(stem).join(" ");
 }
 const $=id=>document.getElementById(id);
-let V=[];
+let V=[]; let VID=new Map();
 function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function rx(alts){
   const parts=alts.map(a=>a.split(" ").map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?:ies|y|es|s|'s|\u2019s)?").join("[^a-z0-9]+"));
@@ -137,39 +153,47 @@ function expand(term){
 }
 
 let state={res:[],alts:[],re:null};
+function prodKey(t){ return norm(t).replace(/^(scratch dent|scratch and dent|broken seal) /,""); }
+function lineBySec(v,sec){ const L=v.lines; let lo=0,hi=L.length-1; while(lo<hi){const mid=(lo+hi+1)>>1; if(L[mid][0]<=sec) lo=mid; else hi=mid-1;} return lo; }
 function run(){
   const raw=$("q").value.trim();
   if(!raw){ $("results").innerHTML=""; $("status").textContent=""; return; }
   const terms=raw.split(",").map(s=>s.trim()).filter(Boolean);
   const altSet=new Set(); terms.forEach(t=>expand(t).forEach(a=>altSet.add(a)));
   const alts=[...altSet]; if(!alts.length) return;
+  const refBy=new Map(); let K=0;
+  if(window.PRODUCT_REFS){ terms.forEach(t=>{ const arr=PRODUCT_REFS[prodKey(t)]; if(arr) arr.forEach(([id,sec,ph])=>{ let m=refBy.get(id); if(!m){m=[];refBy.set(id,m);} m.push([sec,ph]); }); }); }
   const ft=$("ftype").value, fy=$("fyear").value;
   const res=[]; let total=0;
   for(const v of V){
     if(ft==="v"&&v.live) continue; if(ft==="l"&&!v.live) continue;
     if(fy&&!v.date.startsWith(fy)) continue;
-    const h=findHits(v,alts); if(!h.size) continue;
+    const h=findHits(v,alts); let ph=null; const rr=refBy.get(v.id);
+    if(rr){ ph=new Map(); for(const [sec,p] of rr){ const li=lineBySec(v,sec); if(!h.has(li)){ h.set(li,1); ph.set(li,p); K++; } } }
+    if(!h.size) continue;
     let c=0; h.forEach(x=>c+=x); total+=c;
-    res.push({v,h:[...h.keys()].sort((a,b)=>a-b),count:c});
+    res.push({v,h:[...h.keys()].sort((a,b)=>a-b),count:c,ph});
   }
   const s=$("fsort").value;
   res.sort((a,b)=> s==="most"?b.count-a.count : s==="old"?a.v.date.localeCompare(b.v.date) : b.v.date.localeCompare(a.v.date));
-  state={res,alts,re:rx(alts)};
+  state={res,alts,re:rx(alts),K};
   render(raw,total);
 }
-function hitHTML(v,li,re){
+function hitHTML(v,li,re,ph){
   const lines=v.lines, a=Math.max(0,li-1), b=Math.min(lines.length-1,li+1);
   let txt=lines.slice(a,b+1).map(x=>x[1]).join(" ");
-  return `<div class="hit"><a class="ts" target="_blank" rel="noopener" href="${yt(v.id,lines[li][0])}">${fmt(lines[li][0])}</a><div>${hl(txt,re)}</div></div>`;
+  const p=ph&&ph.get(li); const re2=p?rx([...state.alts,p]):re;
+  const tag=p?' <span class="ref" title="The full product name is not said here, but the surrounding words show it is the Co-Op product.">short name</span>':"";
+  return `<div class="hit"><a class="ts" data-v="${v.id}" data-t="${lines[li][0]}" target="_blank" rel="noopener" href="${yt(v.id,lines[li][0])}">${fmt(lines[li][0])}</a><div>${hl(txt,re2)}${tag}</div></div>`;
 }
 function render(raw,total){
   const {res,re}=state;
-  $("status").textContent=res.length?`${total.toLocaleString()} mentions in ${res.length} videos`:"";
+  $("status").textContent=res.length?`${total.toLocaleString()} mentions in ${res.length} videos`+(state.K?` (${state.K.toLocaleString()} are short-name references, marked "short name")`:""):"";
   if(!res.length){ $("results").innerHTML=`<div class="empty">No matches for "${esc(raw)}". Try a shorter or different spelling.</div>`; return; }
   const LIM=5; let html="";
   res.forEach((r,idx)=>{
     const v=r.v;
-    const shown=r.h.slice(0,LIM).map(li=>hitHTML(v,li,re)).join("");
+    const shown=r.h.slice(0,LIM).map(li=>hitHTML(v,li,re,r.ph)).join("");
     const more=r.h.length>LIM?`<button class="more" data-i="${idx}">Show all ${r.h.length} locations</button>`:"";
     html+=`<div class="vid"><div class="vt"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${v.id}">${esc(v.title)}</a></div>
       <div class="meta"><span>${v.date}</span><span class="badge ${v.live?"live":""}">${v.live?"Livestream":"Video"}</span><span>${r.count} mention${r.count>1?"s":""}</span><button class="tbtn" data-t="${idx}">Read full transcript</button></div>
@@ -179,13 +203,13 @@ function render(raw,total){
 }
 $("results").addEventListener("click",e=>{
   const m=e.target.closest(".more"), t=e.target.closest(".tbtn");
-  if(m){ const r=state.res[+m.dataset.i]; $("h"+m.dataset.i).innerHTML=r.h.map(li=>hitHTML(r.v,li,state.re)).join(""); m.remove(); }
+  if(m){ const r=state.res[+m.dataset.i]; $("h"+m.dataset.i).innerHTML=r.h.map(li=>hitHTML(r.v,li,state.re,r.ph)).join(""); m.remove(); }
   if(t){ openT(state.res[+t.dataset.t]); }
 });
 function openT(r){
   const v=r.v; $("mtitle").textContent=v.title+" ("+v.date+")";
   const hs=new Set(r.h); let html="";
-  v.lines.forEach((l,i)=>{ html+=`<div class="ln ${hs.has(i)?"focus":""}" id="L${i}"><a class="ts" target="_blank" rel="noopener" href="${yt(v.id,l[0])}">${fmt(l[0])}</a><div>${hl(l[1],state.re)}</div></div>`; });
+  v.lines.forEach((l,i)=>{ const p=r.ph&&r.ph.get(i); const re2=p?rx([...state.alts,p]):state.re; html+=`<div class="ln ${hs.has(i)?"focus":""}" id="L${i}"><a class="ts" data-v="${v.id}" data-t="${l[0]}" target="_blank" rel="noopener" href="${yt(v.id,l[0])}">${fmt(l[0])}</a><div>${hl(l[1],re2)}</div></div>`; });
   $("mbody").innerHTML=html; $("modal").style.display="block";
   const f=r.h[0]; const el=document.getElementById("L"+f); if(el) el.scrollIntoView({block:"center"});
 }
@@ -196,6 +220,7 @@ $("go").onclick=run; $("q").addEventListener("keydown",e=>{if(e.key==="Enter")ru
 
 function init(){
   V=(window.TRANSCRIPTS||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
+  VID=new Map(V.map(v=>[v.id,v]));
   if(!V.length){ $("sub").textContent="The transcript data files were not found. Keep the data folder next to this page."; return; }
   const years=[...new Set(V.map(v=>v.date.slice(0,4)))].sort().reverse();
   years.forEach(y=>{const o=document.createElement("option");o.value=y;o.textContent=y;$("fyear").appendChild(o)});
@@ -207,6 +232,38 @@ function init(){
     const p=new URLSearchParams(location.search).get("q"); if(p){$("q").value=p;run();}
   });
 }
+/* Embedded player: clicking a time code plays the video here. Ctrl/Cmd/middle-click still opens YouTube in a new tab. */
+let curVid=null;
+function playVideo(id,sec,title){
+  const f=$("pf"); $("player").hidden=false; document.body.classList.add("pl");
+  $("ptitle").textContent=title||""; $("pyt").href=yt(id,sec);
+  if(curVid===id && f.dataset.ready==="1"){
+    try{
+      f.contentWindow.postMessage(JSON.stringify({event:"command",func:"seekTo",args:[sec,true]}),"*");
+      f.contentWindow.postMessage(JSON.stringify({event:"command",func:"playVideo",args:[]}),"*");
+      return;
+    }catch(e){}
+  }
+  curVid=id; f.dataset.ready="0"; f.onload=()=>{f.dataset.ready="1"};
+  f.src=`https://www.youtube-nocookie.com/embed/${id}?start=${sec}&autoplay=1&rel=0&enablejsapi=1&playsinline=1`;
+}
+function closePlayer(){ const f=$("pf"); f.removeAttribute("src"); f.dataset.ready="0"; curVid=null; $("player").hidden=true; document.body.classList.remove("pl"); }
+$("pclose").onclick=closePlayer;
+document.addEventListener("click",e=>{
+  const a=e.target.closest&&e.target.closest("a.ts"); if(!a||!a.dataset.v) return;
+  if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button!==0) return;
+  e.preventDefault(); const v=VID.get(a.dataset.v); playVideo(a.dataset.v,+a.dataset.t,v?v.title:"");
+});
+/* Clicking the title returns to the start page. */
+function goHome(){
+  $("q").value=""; $("ftype").value=""; $("fyear").value=""; $("fsort").value="new";
+  $("results").innerHTML=""; $("status").textContent=""; $("modal").style.display="none"; closePlayer();
+  state={res:[],alts:[],re:null,K:0};
+  try{history.replaceState(null,"",location.pathname)}catch(e){}
+  window.scrollTo(0,0); $("q").focus();
+}
+$("home").addEventListener("click",goHome);
+$("home").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();goHome();}});
 /* Load data/manifest.js, then every data file it lists, then start. */
 function loadScript(src){return new Promise(res=>{const s=document.createElement("script");s.src=src;s.onload=()=>res(true);s.onerror=()=>res(false);document.head.appendChild(s);});}
 (async()=>{
@@ -214,6 +271,7 @@ function loadScript(src){return new Promise(res=>{const s=document.createElement
   if(await loadScript("data/manifest.js")){
     await Promise.all((window.DATA_FILES||[]).map(f=>loadScript("data/"+f)));
     await loadScript("data/search_terms.js");
+    await loadScript("data/product_refs.js");
   }
   init();
 })();

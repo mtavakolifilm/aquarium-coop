@@ -57,12 +57,103 @@ body.pl .wrap{padding-bottom:450px}
 @media(min-width:1200px){body.pl #modal .box{right:calc(3vw + 660px)}}
 @media(max-width:600px){#player{right:8px;bottom:8px;width:calc(100vw - 16px)}}
 .foot{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-size:.8rem;color:var(--mute)}
+
+.tabs{display:flex;gap:6px;margin:0 0 16px;border-bottom:1px solid var(--line)}
+.tab{border:1px solid var(--line);border-bottom:0;border-radius:10px 10px 0 0;background:var(--bg);color:var(--mute);padding:9px 16px;font-weight:600}
+.tab.on{background:var(--card);color:var(--ink);position:relative;top:1px}
+#tabProducts[hidden],#tabSearch[hidden]{display:none}
+.pt-intro{font-size:.9rem;color:var(--mute);margin:0 0 10px}
+.pt-ctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.pt-ctl label{font-size:.85rem;color:var(--mute)}
+.pt-ctl input[type=search]{flex:0 1 220px;padding:9px 12px}
+table.pt{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:.93rem}
+table.pt th,table.pt td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:right}
+table.pt th:first-child,table.pt td:first-child{text-align:left}
+table.pt th{font-size:.78rem;color:var(--mute);cursor:pointer;white-space:nowrap;user-select:none;background:var(--bg)}
+table.pt th.on{color:var(--acc)}
+table.pt tr.prow{cursor:pointer}
+table.pt tr.prow:hover td{background:var(--acc2)}
+table.pt td.pn{font-weight:600}
+table.pt .pg{display:block;font-weight:400;font-size:.76rem;color:var(--mute)}
+table.pt td.mut{color:var(--mute)}
+table.pt tr.grp td{background:var(--bg);color:var(--mute);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;text-align:left;font-weight:600}
+table.pt tr.det td{text-align:left;padding:4px 14px 14px;background:var(--bg)}
+.pt-dv{margin:8px 0}
+.pt-dv .dt{font-weight:600;font-size:.88rem}
+.pt-dv .dt a{color:inherit;text-decoration:none}.pt-dv .dt a:hover{text-decoration:underline}
+.pt-m{display:flex;gap:10px;padding:3px 0;font-size:.88rem}
+.kind{font-size:.68rem;padding:0 7px;border-radius:99px;white-space:nowrap;margin-left:4px;background:var(--acc2);color:var(--acc)}
+.kind.r{background:var(--livebg);color:var(--live)}
+.pt-note{font-size:.84rem;color:var(--mute);margin:14px 0}
+.pt-note summary{cursor:pointer;color:var(--acc);font-weight:600}
+.pt-note p{margin:6px 0}
+@media(max-width:600px){table.pt th,table.pt td{padding:7px 6px;font-size:.84rem}}
+
+:root{--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--up:#1b7a3a;--down:#b3261e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--up:#6fcf8b;--down:#ff8a80}}
+:root[data-theme="dark"]{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--up:#6fcf8b;--down:#ff8a80}
+body.ptab .wrap{max-width:1440px}
+.pt-quick{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:4px 0 6px;font-size:.85rem;color:var(--mute)}
+.pt-quick button{padding:6px 11px;font-size:.84rem;border-radius:99px}
+.pt-quick button:hover{border-color:var(--acc);color:var(--acc)}
+button.lnk{background:none;border:0;color:var(--acc);text-decoration:underline;padding:4px 6px;font-size:.84rem}
+.pt-ctl label{max-width:100%}.pt-ctl select{max-width:100%}
+.pt-ctl select,.pt-ctl input[type=month]{padding:8px 10px;font-size:.88rem;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.pt-sum{font-size:.85rem;color:var(--mute);margin:8px 0 10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.pt-act button{padding:7px 12px;font-size:.84rem}
+.pt-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.pt-scroll table.pt{border:0;border-radius:0;font-size:.86rem;min-width:1260px}
+table.pt th,table.pt td{padding:8px 8px}
+table.pt th{white-space:normal;line-height:1.2;vertical-align:bottom}
+table.pt tr.gh th{cursor:default;text-align:center;font-weight:600;letter-spacing:.03em;text-transform:uppercase;font-size:.68rem;border-left:1px solid var(--line);padding:6px 8px}
+table.pt tr.gh th:first-child{border-left:0}
+table.pt td.pn,table.pt th[data-s="n"]{position:sticky;left:0;background:var(--card);z-index:1;min-width:220px;text-align:left}
+table.pt th[data-s="n"]{background:var(--bg)}
+table.pt tr.prow:hover td.pn,table.pt tr.prow.open td.pn{background:var(--acc2)}
+table.pt tr.prow.open td{background:var(--acc2)}
+table.pt td.main{font-weight:700;font-size:.95rem}
+table.pt td.cb,table.pt th.cb{text-align:center;width:44px;cursor:default;padding:6px 4px}
+table.pt th.cb{font-size:.68rem}
+.cbx{display:inline-flex;padding:6px;cursor:pointer}
+.cbx input{width:16px;height:16px;accent-color:var(--c,var(--acc));cursor:pointer}
+table.pt td.sp{padding:4px 8px}
+table.pt td.dt2,table.pt td.fm{white-space:nowrap}
+.up{color:var(--up);font-weight:600}.down{color:var(--down);font-weight:600}.mut{color:var(--mute)}
+svg.spark{display:block;margin-left:auto;overflow:visible}
+svg.spark .bar{fill:var(--acc)}svg.spark .bar.dim{opacity:.3}svg.spark .zero{fill:var(--line)}
+svg.spark text{font-size:9px;fill:var(--mute)}svg.spark text.v{fill:var(--ink)}
+table.pt tr.det td{padding:10px 14px 16px}
+.pt-dgrid{display:grid;grid-template-columns:auto minmax(220px,1fr) minmax(220px,1fr);gap:22px;margin:4px 0 10px;align-items:start}
+.pt-dgrid svg.spark{margin-left:0}
+.dh{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);font-weight:600;margin-bottom:6px}
+.dsum{margin:0;font-size:.88rem}
+ul.co{list-style:none;margin:0;padding:0;font-size:.86rem}
+ul.co li{display:flex;justify-content:space-between;gap:10px;padding:2px 0;border-bottom:1px solid var(--line)}
+ul.co b{font-variant-numeric:tabular-nums}
+.dbar{display:flex;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px;margin-top:6px;font-size:.88rem}
+.dbar select{padding:5px 8px;font-size:.84rem}
+.badge.dt{background:var(--acc);color:#fff}.badge.dd{background:var(--acc2);color:var(--acc);border:1px solid var(--acc)}.badge.dp{background:transparent;color:var(--mute);border:1px solid var(--line)}
+.pt-cmp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 12px}
+.pt-cmp .ch{font-weight:600;font-size:.92rem;display:flex;justify-content:space-between;align-items:center}
+.legend{display:flex;gap:6px 16px;flex-wrap:wrap;font-size:.84rem;margin:6px 0}
+.lg{display:inline-flex;align-items:center;gap:6px}.lg i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.lg button{background:none;border:0;padding:0 4px;color:var(--mute);font-size:1rem;line-height:1}
+svg.cmpsvg{width:100%;height:auto;display:block;max-height:300px}
+svg.cmpsvg .grid{stroke:var(--line);stroke-width:1}
+svg.cmpsvg .ax{font-size:11px;fill:var(--mute)}svg.cmpsvg .dl{font-size:11px;fill:var(--ink)}
+svg.cmpsvg .hov:hover{fill:var(--ink);fill-opacity:.05}
+.cnote{font-size:.76rem;color:var(--mute)}
+#tip{position:fixed;z-index:50;max-width:300px;background:var(--ink);color:var(--bg);font-size:.8rem;line-height:1.35;padding:7px 10px;border-radius:8px;pointer-events:none;white-space:pre-line;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+#tip[hidden]{display:none}
+@media(max-width:800px){.pt-dgrid{grid-template-columns:1fr}table.pt td.pn,table.pt th[data-s="n"]{min-width:160px}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1><span id="home" role="link" tabindex="0" title="Back to the start page">Aquarium Co-Op Transcript Search</span></h1>
   <p class="sub" id="sub">Loading transcripts...</p>
+  <div class="tabs" role="tablist"><button class="tab on" id="tbS" role="tab">Search transcripts</button><button class="tab" id="tbP" role="tab">Aquarium Co-Op products: mention counts</button></div>
+  <div id="tabSearch">
   <div class="bar">
     <input id="q" type="search" list="terms" placeholder="Search a product, fish, plant, or phrase" autocomplete="off" aria-label="Search">
     <button class="go" id="go">Search</button>
@@ -76,6 +167,8 @@ body.pl .wrap{padding-bottom:450px}
   <div class="tip">Plural and spelling variants match automatically (betta finds bettas). Use commas to search several terms at once, for example: easy green, easy root tabs. Picking a product from the dropdown also finds places where Cory only says part of the name (like &ldquo;our betta pellets&rdquo;), marked <span class="ref">short name</span>.</div>
   <div class="status" id="status"></div>
   <div id="results"></div>
+  </div>
+  <div id="tabProducts" hidden></div>
   <p class="foot">Unofficial search tool, not affiliated with or endorsed by Aquarium Co-Op. Text comes from YouTube's auto-generated captions with name corrections added, so errors remain. Every result links to the original video, which is the source to watch and cite. Short-name references are identified by reading the surrounding words and can occasionally be wrong.</p>
 </div>
 <div id="player" hidden><div class="phead"><div id="ptitle"></div><div class="pbtns"><a id="pyt" target="_blank" rel="noopener">Open on YouTube</a><button id="pclose" aria-label="Close player">Close</button></div></div><div class="pframe"><iframe id="pf" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="YouTube video player"></iframe></div></div>
@@ -231,6 +324,7 @@ function init(){
     $("sub").textContent=`${V.length} videos and livestreams (${live} livestreams), ${V[0].date} to ${V[V.length-1].date}. Names corrected against the Aquarium Co-Op catalog.`;
     $("q").focus();
     const p=new URLSearchParams(location.search).get("q"); if(p){$("q").value=p;run();}
+    if(new URLSearchParams(location.search).get("tab")==="products") showTab("p");
   });
 }
 /* Embedded player: clicking a time code plays the video here. Ctrl/Cmd/middle-click still opens YouTube in a new tab. */
@@ -261,12 +355,239 @@ function goHome(){
   $("results").innerHTML=""; $("status").textContent=""; $("modal").style.display="none"; closePlayer();
   state={res:[],alts:[],re:null,K:0};
   try{history.replaceState(null,"",location.pathname)}catch(e){}
-  window.scrollTo(0,0); $("q").focus();
+  showTab("s"); window.scrollTo(0,0); $("q").focus();
 }
 $("home").addEventListener("click",goHome);
 $("home").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();goHome();}});
+
+/* ---------- Products tab ---------- */
+const PT={mode:"short",range:"all",from:"",to:"",type:"",pos:0,grp:"",show:"",q:"",sort:"pcs",dir:-1,open:new Set(),cmp:[],all:null,dsort:"new"};
+const PTCOL=["--s1","--s2","--s3","--s4"];
+function isoAdd(iso,days,months,years){const d=new Date(iso+"T00:00:00Z"); if(months) d.setUTCMonth(d.getUTCMonth()+months); if(years) d.setUTCFullYear(d.getUTCFullYear()+years); if(days) d.setUTCDate(d.getUTCDate()+days); return d.toISOString().slice(0,10);}
+function dayDiff(a,b){return Math.round((Date.parse(b)-Date.parse(a))/864e5);}
+function ptCtx(){
+  const T=window.PRODUCTS_TAB, end=T.asOf, a0=V[0].date, r=PT.range;
+  let s=a0,e=end,ps=null,pe=null,label="All time";
+  if(/^\d+m$/.test(r)){const n=parseInt(r); s=isoAdd(end,1,-n); pe=isoAdd(s,-1); ps=isoAdd(end,1,-2*n); label=`Last ${n} months`;}
+  else if(/^y\d{4}$/.test(r)){const y=+r.slice(1); s=y+"-01-01"; e=(y+"-12-31")<end?y+"-12-31":end; ps=(y-1)+"-01-01"; pe=isoAdd(e,0,0,-1); label=String(y)+(e<y+"-12-31"?` (to ${e})`:"");}
+  else if(r==="custom"){ s=(PT.from||a0.slice(0,7))+"-01"; const t=PT.to||end.slice(0,7); const [ty,tm]=t.split("-").map(Number); e=new Date(Date.UTC(ty,tm,0)).toISOString().slice(0,10); if(e>end) e=end; if(s>e){const x=s;s=e;e=x;} const days=dayDiff(s,e)+1; pe=isoAdd(s,-1); ps=isoAdd(s,-days); label=`${s} to ${e}`;}
+  if(s<a0) s=a0;
+  if(ps&&ps<a0){ps=null;pe=null;}
+  const okType=v=>PT.type==="v"?!v.live:PT.type==="l"?v.live:true;
+  let content=0; for(const v of V) if(v.date>=s&&v.date<=e&&okType(v)) content++;
+  const kinds=PT.mode==="named"?"n":PT.mode==="short"?"ns":"nsr", lim=PT.pos?PT.pos*60:1e12;
+  return {s,e,ps,pe,okType,content,a0,end,label,kinds,lim};
+}
+function ptStats(p,c){
+  const T=window.PRODUCTS_TAB, years=new Map(), per=new Map(), prev=new Set(); let first="",last="";
+  for(const m of p.m){
+    if(!c.kinds.includes(m[2])||m[1]>c.lim) continue;
+    const v=VID.get(m[0]); if(!v||!c.okType(v)) continue;
+    const d=v.date, y=d.slice(0,4);
+    if(!years.has(y)) years.set(y,new Set()); years.get(y).add(m[0]);
+    if(!first||d<first) first=d; if(d>last) last=d;
+    if(d>=c.s&&d<=c.e){ if(!per.has(m[0])) per.set(m[0],[]); per.get(m[0]).push(m); }
+    if(c.ps&&d>=c.ps&&d<=c.pe) prev.add(m[0]);
+  }
+  let vids=0,lives=0,tot=0,title=0,disc=0,pass=0,views=0; const depth={};
+  for(const [id,arr] of per){
+    const v=VID.get(id); v.live?lives++:vids++; tot+=arr.length; views+=T.views[id]||0;
+    const tf=p.t&&p.t[id], n=arr.length;
+    const dp=(tf===1||(tf===2&&n>=2))?"t":n>=3?"d":"p"; depth[id]=dp;
+    dp==="t"?title++:dp==="d"?disc++:pass++;
+  }
+  const pcs=per.size;
+  let perMo=null;
+  if(first&&first<=c.e){ const st=first>c.s?first:c.s; perMo=pcs/Math.max(1,(dayDiff(st,c.e)+1)/30.44); }
+  const unc=p.u.filter(([id])=>{const v=VID.get(id); return v&&c.okType(v)&&v.date>=c.s&&v.date<=c.e;}).length;
+  return {pcs,vids,lives,tot,title,disc,pass,views,perMo,share:c.content?pcs/c.content:0,
+    chg:c.ps?pcs-prev.size:null,prevN:prev.size,last,first,since:last?dayDiff(last,c.end):null,unc,years,per,depth};
+}
+function fmtN(n){return n>=1e6?(n/1e6).toFixed(n>=1e7?0:1).replace(/\.0$/,"")+"M":n>=1e3?Math.round(n/1e3)+"K":String(n);}
+function ago(d){ if(d==null) return ""; if(d<14) return d===0?"today":`${d} day${d>1?"s":""} ago`; if(d<60) return `${Math.round(d/7)} weeks ago`; if(d<730) return `${Math.round(d/30.44)} months ago`; return `${(d/365.25).toFixed(1).replace(/\.0$/,"")} years ago`; }
+function ptYears(c){ const out=[]; for(let y=+c.a0.slice(0,4);y<=+c.end.slice(0,4);y++) out.push(String(y)); return out; }
+function yearNote(y,c){ return y===c.a0.slice(0,4)?` (archive starts ${c.a0})`:y===c.end.slice(0,4)?` (to ${c.end})`:""; }
+function spark(s,c,big){
+  const ys=ptYears(c), vals=ys.map(y=>s.years.has(y)?s.years.get(y).size:0), mx=Math.max(1,...vals);
+  const W=big?320:96,H=big?90:26,gap=2,bw=(W-gap*(ys.length-1))/ys.length, top=big?14:0, base=big?H-16:H;
+  let g="";
+  ys.forEach((y,i)=>{
+    const h=vals[i]?Math.max(2,(base-top)*vals[i]/mx):0, x=i*(bw+gap);
+    const inR=(y+"-12-31")>=c.s&&(y+"-01-01")<=c.e;
+    const tip=`${y}${yearNote(y,c)}: ${vals[i]} video${vals[i]===1?"":"s"} and livestreams`;
+    g+=`<g data-tip="${esc(tip)}"><rect x="${x}" y="${top}" width="${bw}" height="${base-top}" fill="transparent"/>`+
+       (h?`<rect class="bar${inR?"":" dim"}" x="${x}" y="${base-h}" width="${bw}" height="${h}" rx="2"/>`:`<rect class="zero" x="${x}" y="${base-1}" width="${bw}" height="1"/>`)+
+       (big?`<text x="${x+bw/2}" y="${H-3}" text-anchor="middle">${"'"+y.slice(2)}</text>${vals[i]?`<text x="${x+bw/2}" y="${base-h-3}" text-anchor="middle" class="v">${vals[i]}</text>`:""}`:"")+`</g>`;
+  });
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Videos and livestreams per year: ${ys.map((y,i)=>y+" "+vals[i]).join(", ")}">${g}</svg>`;
+}
+let PTROWS=[];
+function ptRender(){
+  const T=window.PRODUCTS_TAB; if(!T){ $("tabProducts").innerHTML='<div class="empty">The product count data file was not found. Keep the data folder next to this page.</div>'; return; }
+  const c=ptCtx();
+  const groups=[...new Set(T.products.map(p=>p.g))];
+  const all=T.products.map(p=>({p,s:ptStats(p,c)})); const byK=new Map(all.map(r=>[r.p.k,r]));
+  let rows=all.slice();
+  if(PT.grp) rows=rows.filter(r=>r.p.g===PT.grp);
+  if(PT.q){ const q=norm(PT.q); rows=rows.filter(r=>norm(r.p.n).includes(q)); }
+  if(PT.show==="in") rows=rows.filter(r=>r.s.pcs>0);
+  if(PT.show==="out") rows=rows.filter(r=>r.s.pcs===0);
+  const k=PT.sort;
+  rows.sort((a,b)=>{
+    if(k==="n") return PT.dir*a.p.n.localeCompare(b.p.n);
+    let x=a.s[k],y=b.s[k];
+    if(k==="last"||k==="first"){ x=x||null; y=y||null; }
+    if(x==null&&y==null) return a.p.n.localeCompare(b.p.n); if(x==null) return 1; if(y==null) return -1;
+    const d=typeof x==="string"?x.localeCompare(y):x-y; return PT.dir*d||(b.s.pcs-a.s.pcs)||a.p.n.localeCompare(b.p.n);
+  });
+  PTROWS=rows;
+  const years=ptYears(c);
+  const opt=(v,t,cur)=>`<option value="${v}"${cur===v?" selected":""}>${t}</option>`;
+  const th=(key,t,title)=>`<th data-s="${key}" class="${PT.sort===key?"on":""}"${title?` data-tip="${esc(title)}"`:""}>${t}${PT.sort===key?(PT.dir<0?" ▾":" ▴"):""}</th>`;
+  let h=`<p class="pt-intro">Only products Aquarium Co-Op makes under its own name. The main number is how many separate videos and livestreams brought a product up, so one long livestream counts once. Click a row to see every moment and check it. Hover over a column heading for what it means.</p>
+  <div class="pt-quick"><span>Quick views:</span>
+    <button data-preset="top">Most covered, last 12 months</button>
+    <button data-preset="quiet">Gone quiet the longest</button>
+    <button data-preset="drop">Losing airtime vs the year before</button>
+    <button data-preset="title">Most featured in titles</button>
+    <button data-preset="reset" class="lnk">Reset everything</button></div>
+  <div class="pt-ctl">
+    <label>Dates <select id="ptRange">${opt("all","All time",PT.range)}${opt("12m","Last 12 months",PT.range)}${opt("6m","Last 6 months",PT.range)}${opt("3m","Last 3 months",PT.range)}${years.slice().reverse().map(y=>opt("y"+y,y,PT.range)).join("")}${opt("custom","Custom range",PT.range)}</select></label>
+    ${PT.range==="custom"?`<label>From <input type="month" id="ptFrom" min="${c.a0.slice(0,7)}" max="${c.end.slice(0,7)}" value="${PT.from||c.a0.slice(0,7)}"></label><label>To <input type="month" id="ptTo" min="${c.a0.slice(0,7)}" max="${c.end.slice(0,7)}" value="${PT.to||c.end.slice(0,7)}"></label>`:""}
+    <label>Type <select id="ptType">${opt("","Videos and livestreams",PT.type)}${opt("v","Videos only",PT.type)}${opt("l","Livestreams only",PT.type)}</select></label>
+    <label>Where in the video <select id="ptPos">${opt("0","Anywhere",String(PT.pos))}${opt("5","First 5 minutes",String(PT.pos))}${opt("10","First 10 minutes",String(PT.pos))}${opt("30","First 30 minutes",String(PT.pos))}</select></label>
+  </div>
+  <div class="pt-ctl">
+    <label>Count <select id="ptMode">${opt("short","Name said, or short name judged as Co-Op (recommended)",PT.mode)}${opt("named","Only when the product name is said",PT.mode)}${opt("all","Everything, including every “sponge filter” by your rule (loosest)",PT.mode)}</select></label>
+    <label>Group <select id="ptGrp"><option value="">All groups</option>${groups.map(g=>`<option${PT.grp===g?" selected":""}>${esc(g)}</option>`).join("")}</select></label>
+    <label>Show <select id="ptShow">${opt("","All products",PT.show)}${opt("in","Mentioned in this period",PT.show)}${opt("out","Not mentioned in this period",PT.show)}</select></label>
+    <input type="search" id="ptQ" placeholder="Filter by product name" value="${esc(PT.q)}">
+  </div>
+  <div class="pt-sum">${esc(c.label)}${PT.type?` &middot; ${PT.type==="v"?"videos only":"livestreams only"}`:""}${PT.pos?` &middot; first ${PT.pos} minutes only`:""}: ${c.content} videos and livestreams in the archive for this period. ${c.ps?`&ldquo;vs previous&rdquo; compares with ${c.ps} to ${c.pe}.`:`Pick a date range to compare with the previous period.`}
+    <span class="pt-act"><button id="ptCsv">Download this table (CSV)</button></span></div>
+  <div id="ptCmp">${ptCompare(byK,c)}</div>
+  <div class="pt-scroll"><table class="pt"><thead>
+  <tr class="gh"><th colspan="2"></th><th colspan="6">Reach in this period</th><th colspan="3">How it came up (videos and livestreams)</th><th colspan="5">Over time</th><th></th></tr>
+  <tr><th class="cb" data-tip="Tick up to 4 products to compare them on a chart">Compare</th>${th("n","Product")}${th("pcs","Videos +<br>livestreams","Number of separate videos and livestreams that brought it up at least once. One long livestream counts once. This is the main number.")}${th("vids","Videos")}${th("lives","Live-<br>streams")}${th("share","Share of<br>content","Out of every video and livestream in this period, the share that brought it up")}${th("tot","Times<br>brought up","Every separate moment it came up. Five moments in one video count as 5. Moments within 15 seconds count once.")}${th("views","Views of<br>those videos",`Combined YouTube views of the videos and livestreams that brought it up (rounded, as of ${T.viewsAsOf}). This is how many times those videos were watched, not how many people heard the mention.`)}${th("title","In the<br>title","Videos where the product (or its kind, with 2+ mentions) is in the title. Usually a dedicated video.")}${th("disc","Discussed<br>3+ times","Came up at 3 or more separate moments, but not in the title")}${th("pass","Once or<br>twice","Came up at 1 or 2 moments: a passing mention")}${th("perMo","Per<br>month","Videos and livestreams per month, counted from the start of the period or the product's first mention, whichever is later. Makes new and old products comparable.")}${th("chg","vs<br>previous","Change in videos and livestreams compared with the period of the same length just before. Needs a date range.")}<th data-tip="Videos and livestreams per year. Faded bars are outside the chosen dates.">By year</th>${th("last","Last<br>mentioned","Most recent video or livestream that brought it up (ignores the date range)")}${th("first","First<br>mentioned")}${th("unc","Unclear","Moments too unclear to count. Not included anywhere.")}</tr></thead><tbody>`;
+  for(const r of rows){
+    const p=r.p,s=r.s,id=p.k, on=PT.cmp.includes(id), ci=PT.cmp.indexOf(id);
+    const chg=s.chg==null?'<span class="mut">&ndash;</span>':s.chg===0?`<span class="mut" data-tip="${s.prevN} before, ${s.pcs} now">same</span>`:`<span class="${s.chg>0?"up":"down"}" data-tip="${s.prevN} before, ${s.pcs} now">${s.chg>0?"+":"&minus;"}${Math.abs(s.chg)}</span>`;
+    h+=`<tr class="prow${PT.open.has(id)?" open":""}" data-k="${id}"><td class="cb"><label class="cbx"${on?` style="--c:var(${PTCOL[ci]})"`:""}><input type="checkbox" data-cmp="${id}"${on?" checked":""}${!on&&PT.cmp.length>=4?" disabled":""} aria-label="Compare ${esc(p.n)}"></label></td>
+      <td class="pn">${esc(p.n)}<span class="pg">${esc(p.g)}</span></td>
+      <td class="main">${s.pcs}</td><td>${s.vids}</td><td>${s.lives}</td><td>${s.pcs?(s.share*100).toFixed(1)+"%":""}</td><td class="mut">${s.tot.toLocaleString()}</td><td>${s.views?fmtN(s.views):""}</td>
+      <td>${s.title||""}</td><td>${s.disc||""}</td><td>${s.pass||""}</td>
+      <td>${s.perMo==null?"":s.perMo===0?"0":s.perMo<0.1?"&lt;0.1":s.perMo.toFixed(s.perMo<10?1:0)}</td><td>${chg}</td><td class="sp">${spark(s,c)}</td>
+      <td class="dt2">${s.last?`${s.last}<span class="pg">${ago(s.since)}</span>`:'<span class="mut">never</span>'}</td><td class="mut fm">${s.first||""}</td><td class="mut">${s.unc||""}</td></tr>`;
+    if(PT.open.has(id)) h+=`<tr class="det"><td colspan="17">${ptDetail(r,c,all)}</td></tr>`;
+  }
+  if(!rows.length) h+=`<tr><td colspan="17" class="mut" style="text-align:left">No products match these filters.</td></tr>`;
+  h+=`</tbody></table></div>
+  <details class="pt-note"><summary>How these counts were made</summary>
+  <p>Every transcript was searched for each product's full name, the name Cory uses as shorthand (for example &ldquo;root tabs&rdquo; or &ldquo;our air pump&rdquo;), and a few close variants. Every short-name moment was then read in context and counted only when Cory is clearly talking about the Aquarium Co-Op product. Talk about the general category (air pumps, undergravel filters, other brands) is not counted. &ldquo;Unclear&rdquo; moments are not counted anywhere.</p>
+  <p>Timing matters. The Easy Undergravel Filter System is new in 2026, so earlier talk about undergravel filters is not counted. Co-Op sponge filters existed from September 2019, so earlier sponge filter talk is not counted either. The Easy Flow name came in October 2023; earlier mentions of &ldquo;the Co-Op sponge filter&rdquo; are counted under it.</p>
+  <p>Your rule: &ldquo;sponge filter&rdquo; said by itself means the coarse Easy Flow sponge filter, &ldquo;fine sponge filter&rdquo; means the fine one, and &ldquo;vinyl tubing&rdquo; means Clear Vinyl Tubing. These are marked <span class="kind r">by rule</span> and only count in the loosest Count setting. Most of them are Cory talking about sponge filters in general, so that number runs high. In the recommended setting, a &ldquo;sponge filter&rdquo; mention counts only when it was read and judged to be the Co-Op sponge filter.</p>
+  <p>How it came up: each video or livestream is put in one bucket. &ldquo;In the title&rdquo; means the product name is in the video title, or the kind of product is (for example &ldquo;sponge filter&rdquo; or &ldquo;fertilizer&rdquo;) and it came up at least twice. Otherwise 3 or more separate moments is &ldquo;discussed,&rdquo; and 1 or 2 is &ldquo;once or twice.&rdquo;</p>
+  <p>Views are YouTube's rounded public view counts, taken on ${T.viewsAsOf}. They keep growing, and older videos have had more time to collect views. They show how many times a video was watched, not how many people reached the moment the product came up. Use &ldquo;Where in the video&rdquo; to count only mentions early in a video, when most viewers are still watching.</p>
+  <p>Limits: items the Co-Op sells under everyday names (check valves, bulkheads, air stones and similar) are counted only when it is clear Cory means the Co-Op version, so they may be undercounted. A zero means no clear mention was found, not that it was never said. Captions can mishear names, which can cause misses. The archive starts in October 2018, so 2018 covers three months only.</p></details>`;
+  $("tabProducts").innerHTML=h;
+}
+function ptDetail(r,c,all){
+  const T=window.PRODUCTS_TAB,p=r.p,s=r.s;
+  if(!s.pcs) return `<div class="pt-dgrid"><div><div class="dh">By year</div>${spark(s,c,true)}</div><div class="empty">No clear mentions in this period${s.last?`. Last mentioned ${s.last} (${ago(s.since)}).`:"."}</div></div>`;
+  const co=all.filter(o=>o.p.k!==p.k&&o.s.pcs).map(o=>{let n=0; for(const id of s.per.keys()) if(o.s.per.has(id)) n++; return {o,n};}).filter(x=>x.n).sort((a,b)=>b.n-a.n).slice(0,6);
+  let h=`<div class="pt-dgrid"><div><div class="dh">By year</div>${spark(s,c,true)}</div>
+   <div><div class="dh">In this period</div><p class="dsum">${s.vids} video${s.vids===1?"":"s"} and ${s.lives} livestream${s.lives===1?"":"s"}, ${(s.share*100).toFixed(1)}% of everything posted. In the title of ${s.title}, discussed 3+ times in ${s.disc}, once or twice in ${s.pass}. Those videos have ${fmtN(s.views)} views combined.</p></div>
+   <div><div class="dh">Often comes up in the same videos as</div>${co.length?`<ul class="co">${co.map(x=>`<li><span>${esc(x.o.p.n)}</span><b>${x.n}</b></li>`).join("")}</ul>`:'<p class="dsum">No other Co-Op product in the same videos.</p>'}</div></div>`;
+  const ids=[...s.per.keys()];
+  ids.sort(PT.dsort==="views"?(a,b)=>(T.views[b]||0)-(T.views[a]||0):PT.dsort==="most"?(a,b)=>s.per.get(b).length-s.per.get(a).length:(a,b)=>VID.get(b).date.localeCompare(VID.get(a).date));
+  h+=`<div class="dbar"><b>${ids.length} video${ids.length===1?"":"s"} and livestreams</b><label>Sort <select data-dsort="1">${[["new","Newest first"],["views","Most views"],["most","Most mentions"]].map(([v,t])=>`<option value="${v}"${PT.dsort===v?" selected":""}>${t}</option>`).join("")}</select></label></div>`;
+  const lim=PT.all===p.k?1e9:20; const DL={t:"In the title",d:"Discussed",p:"Passing"};
+  ids.slice(0,lim).forEach(id=>{
+    const v=VID.get(id), arr=s.per.get(id).slice().sort((a,b)=>a[1]-b[1]), dp=s.depth[id];
+    h+=`<div class="pt-dv"><div class="dt"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${id}">${esc(v.title)}</a> <span class="badge ${v.live?"live":""}">${v.live?"Livestream":"Video"}</span> <span class="badge d${dp}">${DL[dp]}</span> <span class="meta" style="display:inline">${v.date} &middot; ${arr.length} moment${arr.length>1?"s":""}${T.views[id]?` &middot; ${fmtN(T.views[id])} views`:""}</span></div>`;
+    for(const m of arr){ const li=lineBySec(v,m[1]); const a=Math.max(0,li-1),b=Math.min(v.lines.length-1,li+1); const txt=v.lines.slice(a,b+1).map(x=>x[1]).join(" ");
+      h+=`<div class="pt-m"><a class="ts" data-v="${id}" data-t="${v.lines[li][0]}" target="_blank" rel="noopener" href="${yt(id,v.lines[li][0])}">${fmt(v.lines[li][0])}</a><div>${esc(txt)}${m[2]==="r"?' <span class="kind r" data-tip="Counted because of your sponge filter / vinyl tubing rule">by rule</span>':m[2]==="s"?' <span class="kind" data-tip="Short name, judged from the surrounding words">short name</span>':""}</div></div>`; }
+    h+=`</div>`;
+  });
+  if(ids.length>lim) h+=`<button class="more" data-all="${p.k}">Show all ${ids.length}</button>`;
+  return h;
+}
+function ptCompare(byK,c){
+  if(!PT.cmp.length) return "";
+  const ys=ptYears(c), S=PT.cmp.map(k=>byK.get(k)).filter(Boolean);
+  const vals=S.map(r=>ys.map(y=>r.s.years.has(y)?r.s.years.get(y).size:0));
+  const mx=Math.max(4,...vals.flat()); const step=mx<=10?2:mx<=25?5:mx<=60?10:mx<=150?25:50; const ymax=Math.ceil(mx/step)*step;
+  const W=760,H=250,L=36,R=150,Tp=12,B=26, pw=W-L-R, ph=H-Tp-B, X=i=>L+(ys.length===1?pw/2:i*pw/(ys.length-1)), Y=v=>Tp+ph-(v/ymax)*ph;
+  let g="";
+  for(let v=0;v<=ymax;v+=step) g+=`<line class="grid" x1="${L}" x2="${L+pw}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${L-6}" y="${Y(v)+4}" text-anchor="end">${v}</text>`;
+  ys.forEach((y,i)=>g+=`<text class="ax" x="${X(i)}" y="${H-6}" text-anchor="middle">${y}${i===0||i===ys.length-1?"*":""}</text>`);
+  const lab=[];
+  S.forEach((r,si)=>{ const col=`var(${PTCOL[PT.cmp.indexOf(r.p.k)]})`;
+    g+=`<polyline fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round" points="${vals[si].map((v,i)=>X(i)+","+Y(v)).join(" ")}"/>`;
+    vals[si].forEach((v,i)=>g+=`<circle cx="${X(i)}" cy="${Y(v)}" r="4" fill="${col}" stroke="var(--card)" stroke-width="2"/>`);
+    lab.push({y:Y(vals[si][ys.length-1]),t:r.p.n.replace(/\s*\(.*\)$/,""),col});
+  });
+  lab.sort((a,b)=>a.y-b.y); for(let i=1;i<lab.length;i++) if(lab[i].y-lab[i-1].y<14) lab[i].y=lab[i-1].y+14;
+  lab.forEach(l=>{ const t=l.t.length>22?l.t.slice(0,21)+"…":l.t; g+=`<text class="dl" x="${L+pw+8}" y="${l.y+4}">${esc(t)}</text>`; });
+  ys.forEach((y,i)=>{ const tip=`${y}${yearNote(y,c)}\n`+S.map((r,si)=>`${r.p.n.replace(/\s*\(.*\)$/,"")}: ${vals[si][i]}`).join("\n"); const w=pw/Math.max(1,ys.length-1);
+    g+=`<rect class="hov" data-tip="${esc(tip)}" x="${Math.max(L,X(i)-w/2)}" y="${Tp}" width="${Math.min(w,L+pw-Math.max(L,X(i)-w/2))}" height="${ph}" fill="transparent"/>`; });
+  const leg=S.map(r=>`<span class="lg"><i style="background:var(${PTCOL[PT.cmp.indexOf(r.p.k)]})"></i>${esc(r.p.n)} <button data-uncmp="${r.p.k}" aria-label="Remove">&times;</button></span>`).join("");
+  return `<div class="pt-cmp"><div class="ch">Compare: videos and livestreams per year<button class="lnk" data-uncmp="*">Clear</button></div><div class="legend">${leg}</div>
+   <svg viewBox="0 0 ${W} ${H}" class="cmpsvg" role="img" aria-label="Videos and livestreams per year for the selected products">${g}</svg>
+   <div class="cnote">* ${ys[0]} starts ${c.a0} and ${ys[ys.length-1]} runs to ${c.end}, so those years are partial. Uses the Type, Where in the video, and Count settings; ignores Dates.</div></div>`;
+}
+function ptCsv(){
+  const c=ptCtx(); const head=["Product","Group","Videos + livestreams","Videos","Livestreams","Share of content (%)","Times brought up","Views of those videos","In the title","Discussed 3+ times","Once or twice","Per month","vs previous period","Last mentioned","First mentioned","Unclear (not counted)"];
+  const q=x=>{x=x==null?"":String(x); return /[",\n]/.test(x)?`"${x.replace(/"/g,'""')}"`:x;};
+  const lines=[`# ${c.label}; type: ${PT.type||"both"}; where: ${PT.pos?"first "+PT.pos+" min":"anywhere"}; count: ${PT.mode}`,head.join(",")];
+  for(const r of PTROWS){const s=r.s; lines.push([r.p.n,r.p.g,s.pcs,s.vids,s.lives,(s.share*100).toFixed(1),s.tot,s.views,s.title,s.disc,s.pass,s.perMo==null?"":s.perMo.toFixed(2),s.chg==null?"":s.chg,s.last,s.first,s.unc].map(q).join(","));}
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([lines.join("\n")],{type:"text/csv"})); a.download="coop_product_mentions.csv"; document.body.appendChild(a); a.click(); a.remove();
+}
+function ptPreset(n){
+  const keep={open:new Set(),cmp:PT.cmp,dsort:PT.dsort,all:null};
+  const base={mode:"short",range:"all",from:"",to:"",type:"",pos:0,grp:"",show:"",q:"",sort:"pcs",dir:-1};
+  Object.assign(PT,base,keep);
+  if(n==="top"){PT.range="12m";}
+  if(n==="quiet"){PT.sort="last";PT.dir=1;}
+  if(n==="drop"){PT.range="12m";PT.sort="chg";PT.dir=1;PT.show="";}
+  if(n==="title"){PT.sort="title";PT.dir=-1;}
+  if(n==="reset"){PT.cmp=[];}
+  ptRender();
+}
+$("tabProducts").addEventListener("change",e=>{
+  const t=e.target, map={ptMode:"mode",ptGrp:"grp",ptRange:"range",ptType:"type",ptShow:"show",ptFrom:"from",ptTo:"to"};
+  if(map[t.id]){ PT[map[t.id]]=t.value; ptRender(); return; }
+  if(t.id==="ptPos"){ PT.pos=+t.value; ptRender(); return; }
+  if(t.dataset.dsort){ PT.dsort=t.value; ptRender(); return; }
+  if(t.dataset.cmp){ const k=t.dataset.cmp; if(t.checked){ if(PT.cmp.length<4) PT.cmp.push(k);} else PT.cmp=PT.cmp.filter(x=>x!==k); ptRender(); return; }
+});
+$("tabProducts").addEventListener("input",e=>{ if(e.target.id==="ptQ"){ PT.q=e.target.value; const pos=e.target.selectionStart; ptRender(); const q=$("ptQ"); q.focus(); q.setSelectionRange(pos,pos);} });
+$("tabProducts").addEventListener("click",e=>{
+  const pr=e.target.closest("[data-preset]"); if(pr){ ptPreset(pr.dataset.preset); return; }
+  if(e.target.id==="ptCsv"){ ptCsv(); return; }
+  const un=e.target.closest("[data-uncmp]"); if(un){ const k=un.dataset.uncmp; PT.cmp=k==="*"?[]:PT.cmp.filter(x=>x!==k); ptRender(); return; }
+  const th=e.target.closest("th[data-s]"); if(th){ const k=th.dataset.s; if(PT.sort===k) PT.dir=-PT.dir; else {PT.sort=k;PT.dir=k==="n"||k==="first"||k==="last"?1:-1;} ptRender(); return; }
+  const mb=e.target.closest("button[data-all]"); if(mb){ PT.all=mb.dataset.all; ptRender(); return; }
+  if(e.target.closest("a,details,select,input,label,button,.det")) return;
+  const tr=e.target.closest("tr.prow"); if(tr){ const k=tr.dataset.k; if(PT.open.has(k)) PT.open.delete(k); else PT.open.add(k); PT.all=null; ptRender(); }
+});
+/* Shared hover tooltip for anything with data-tip */
+(function(){
+  const tip=document.createElement("div"); tip.id="tip"; tip.hidden=true; document.body.appendChild(tip);
+  let cur=null;
+  document.addEventListener("mouseover",e=>{ const el=e.target.closest&&e.target.closest("[data-tip]"); cur=el; if(!el){tip.hidden=true;return;} tip.textContent=el.getAttribute("data-tip"); tip.hidden=false; });
+  document.addEventListener("mousemove",e=>{ if(tip.hidden) return; const w=tip.offsetWidth,h=tip.offsetHeight; let x=e.clientX+14,y=e.clientY+16; if(x+w>innerWidth-8) x=e.clientX-w-14; if(y+h>innerHeight-8) y=e.clientY-h-12; tip.style.left=Math.max(8,x)+"px"; tip.style.top=Math.max(8,y)+"px"; });
+  document.addEventListener("scroll",()=>{tip.hidden=true},true);
+})();
+function showTab(which){
+  const P=which==="p"; $("tabSearch").hidden=P; $("tabProducts").hidden=!P;
+  $("tbS").classList.toggle("on",!P); $("tbP").classList.toggle("on",P); document.body.classList.toggle("ptab",P);
+  if(P) ptRender(); else $("q").focus();
+}
+$("tbS").onclick=()=>showTab("s"); $("tbP").onclick=()=>showTab("p");
+
 /* Load data/manifest.js, then every data file it lists, then start. */
-const VER="8"; /* bump this number whenever data files change so browsers fetch fresh copies */
+const VER="11"; /* bump this number whenever data files change so browsers fetch fresh copies */
 function loadScript(src){return new Promise(res=>{const s=document.createElement("script");s.src=src+"?v="+VER;s.onload=()=>res(true);s.onerror=()=>res(false);document.head.appendChild(s);});}
 (async()=>{
   window.TRANSCRIPTS=[];
@@ -274,6 +595,7 @@ function loadScript(src){return new Promise(res=>{const s=document.createElement
     await Promise.all((window.DATA_FILES||[]).map(f=>loadScript("data/"+f)));
     await loadScript("data/search_terms.js");
     await loadScript("data/product_refs.js");
+    await loadScript("data/products_tab.js");
   }
   init();
 })();
